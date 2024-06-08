@@ -1,7 +1,10 @@
 
 import java.sql.*;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 public class EmployeeInformation extends javax.swing.JFrame {
@@ -10,6 +13,7 @@ public class EmployeeInformation extends javax.swing.JFrame {
     public EmployeeInformation() {
         initComponents();
         Connect();
+        table_update();
        
     }
     
@@ -30,6 +34,38 @@ public class EmployeeInformation extends javax.swing.JFrame {
             Logger.getLogger(EmployeeInformation.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    private void table_update()
+    {
+        int CC;
+        try{
+            pst = con.prepareStatement("SELECT * FROM records");
+            ResultSet Rs = pst.executeQuery();
+            
+            ResultSetMetaData RSMD = Rs.getMetaData ();
+            CC = RSMD.getColumnCount();
+            DefaultTableModel DFT = (DefaultTableModel) jTable1.getModel();
+            DFT.setRowCount(0);
+            
+            while (Rs.next()){
+                Vector v2 = new Vector();
+                
+                for (int ii = 1; ii <= CC; ii++) {
+                    v2.add(Rs.getString("id"));
+                    v2.add(Rs.getString("fname"));
+                    v2.add(Rs.getString("lname"));
+                    v2.add(Rs.getString("city"));
+                    v2.add(Rs.getString("phone"));
+                    v2.add(Rs.getString("salary"));
+                }
+                DFT.addRow(v2);
+            }
+        } catch (Exception e) {
+                }
+        }
+            
+        
+    
     
     
 
@@ -188,6 +224,8 @@ public class EmployeeInformation extends javax.swing.JFrame {
                 "ID", "First Name", "Last Name", "City", "Phone", "Salary"
             }
         ));
+        jTable1.setShowHorizontalLines(false);
+        jTable1.setShowVerticalLines(false);
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setBackground(new java.awt.Color(0, 0, 204));
@@ -219,8 +257,8 @@ public class EmployeeInformation extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -289,19 +327,37 @@ public class EmployeeInformation extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-            // TODO add your handling code here:
-            
+        try {            
             String fname,lname,city,phone,salary;
-            
             fname = txtFname.getText();
             lname = txtLname.getText();
             city = txtCity.getText();
             phone = txtphone.getText();
             salary = txtsalary.getText();
+            pst = con.prepareStatement("insert into records(fname,lname,city,phone,salary)values(?,?,?,?,?)");
+            
+            pst.setString(1,fname);
+            pst.setString(2,lname);
+            pst.setString(3,city);
+            pst.setString(4,phone);
+            pst.setString(5,salary);
             
             
+            pst.executeUpdate();
             
+            JOptionPane.showMessageDialog(this, "Record Saved");
             
+            txtFname.setText("");
+            txtLname.setText("");
+            txtCity.setText("");
+            txtphone.setText("");
+            txtsalary.setText("");
+            txtFname.requestFocus();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeInformation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
             
     }//GEN-LAST:event_jButton2ActionPerformed
 
