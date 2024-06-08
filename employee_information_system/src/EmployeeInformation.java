@@ -1,18 +1,38 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 
-/**
- *
- * @author acer
- */
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 public class EmployeeInformation extends javax.swing.JFrame {
 
     /** Creates new form EmployeeInformation */
     public EmployeeInformation() {
         initComponents();
+        Connect();
+       
     }
+    
+    
+    Connection con;
+    PreparedStatement pst;
+    
+    
+    
+    public void Connect(){
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");//Register the mysql driver
+            con = DriverManager.getConnection("jdbc:mysql://localhost/employeeinfo","root","");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EmployeeInformation.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeInformation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    
 
     /** This method is called from within the constructor to
      * initialize the form.
