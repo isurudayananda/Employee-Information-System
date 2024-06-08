@@ -29,7 +29,6 @@ public class EmployeeInformation extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(EmployeeInformation.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
     
     
