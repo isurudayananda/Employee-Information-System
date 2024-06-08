@@ -226,6 +226,11 @@ public class EmployeeInformation extends javax.swing.JFrame {
         ));
         jTable1.setShowHorizontalLines(false);
         jTable1.setShowVerticalLines(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setBackground(new java.awt.Color(0, 0, 204));
@@ -344,8 +349,9 @@ public class EmployeeInformation extends javax.swing.JFrame {
             
             
             pst.executeUpdate();
-            
             JOptionPane.showMessageDialog(this, "Record Saved");
+            table_update();
+            
             
             txtFname.setText("");
             txtLname.setText("");
@@ -364,6 +370,22 @@ public class EmployeeInformation extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int selectedIndex = jTable1.getSelectedRow();
+        
+        txtFname.setText(model.getValueAt(selectedIndex, 1).toString());
+        txtLname.setText(model.getValueAt(selectedIndex, 2).toString());
+        txtCity.setText(model.getValueAt(selectedIndex, 3).toString());
+        txtphone.setText(model.getValueAt(selectedIndex, 4).toString());
+        txtsalary.setText(model.getValueAt(selectedIndex, 5).toString());
+        
+        
+        
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
