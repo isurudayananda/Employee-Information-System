@@ -64,7 +64,7 @@ public class EmployeeInformation extends javax.swing.JFrame {
                 }
         }
             
-        
+
     
     
     
@@ -329,6 +329,35 @@ public class EmployeeInformation extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        
+        try {  
+            
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int selectedIndex = jTable1.getSelectedRow();
+        
+            int id = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString());
+            
+           
+            pst = con.prepareStatement("delete from records where id = ?");
+           
+            pst.setInt(1,id);
+            
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Record Deleted");
+            table_update();
+            
+            
+            txtFname.setText("");
+            txtLname.setText("");
+            txtCity.setText("");
+            txtphone.setText("");
+            txtsalary.setText("");
+            txtFname.requestFocus();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeInformation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -370,24 +399,30 @@ public class EmployeeInformation extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
-        try {            
+        try {  
+            
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int selectedIndex = jTable1.getSelectedRow();
+        
+            int id = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString());
+            
             String fname,lname,city,phone,salary;
             fname = txtFname.getText();
             lname = txtLname.getText();
             city = txtCity.getText();
             phone = txtphone.getText();
             salary = txtsalary.getText();
-            pst = con.prepareStatement("insert into records(fname,lname,city,phone,salary)values(?,?,?,?,?)");
+            pst = con.prepareStatement("update records set fname=?,lname=?,city=?,phone=?,salary=? where id = ?");
             
             pst.setString(1,fname);
             pst.setString(2,lname);
             pst.setString(3,city);
             pst.setString(4,phone);
             pst.setString(5,salary);
-            
+            pst.setInt(6,id);
             
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Record Saved");
+            JOptionPane.showMessageDialog(this, "Record Updated");
             table_update();
             
             
@@ -411,7 +446,7 @@ public class EmployeeInformation extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
         
-        int id = Integer.parseInt(model.getValueAt(selectedIndex, 1).toString());
+        int id = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString());
         txtFname.setText(model.getValueAt(selectedIndex, 1).toString());
         txtLname.setText(model.getValueAt(selectedIndex, 2).toString());
         txtCity.setText(model.getValueAt(selectedIndex, 3).toString());
