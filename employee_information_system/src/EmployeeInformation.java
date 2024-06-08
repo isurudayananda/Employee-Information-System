@@ -369,6 +369,40 @@ public class EmployeeInformation extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
+        try {            
+            String fname,lname,city,phone,salary;
+            fname = txtFname.getText();
+            lname = txtLname.getText();
+            city = txtCity.getText();
+            phone = txtphone.getText();
+            salary = txtsalary.getText();
+            pst = con.prepareStatement("insert into records(fname,lname,city,phone,salary)values(?,?,?,?,?)");
+            
+            pst.setString(1,fname);
+            pst.setString(2,lname);
+            pst.setString(3,city);
+            pst.setString(4,phone);
+            pst.setString(5,salary);
+            
+            
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Record Saved");
+            table_update();
+            
+            
+            txtFname.setText("");
+            txtLname.setText("");
+            txtCity.setText("");
+            txtphone.setText("");
+            txtsalary.setText("");
+            txtFname.requestFocus();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeInformation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -377,6 +411,7 @@ public class EmployeeInformation extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
         
+        int id = Integer.parseInt(model.getValueAt(selectedIndex, 1).toString());
         txtFname.setText(model.getValueAt(selectedIndex, 1).toString());
         txtLname.setText(model.getValueAt(selectedIndex, 2).toString());
         txtCity.setText(model.getValueAt(selectedIndex, 3).toString());
